@@ -16,7 +16,7 @@ const PostList: React.FC<Props> = ({ post, aspect, preloadImage }) => {
 
   return (
     <>
-      <div className="cursor-pointer group">
+      <article className="cursor-pointer group">
         <div
           className={cx(
             'relative overflow-hidden transition-all bg-gray-100 rounded-md dark:bg-gray-800   hover:scale-105',
@@ -84,7 +84,7 @@ const PostList: React.FC<Props> = ({ post, aspect, preloadImage }) => {
           </span>
           <Date date={post.published} className="text-sm"/>
         </div>
-      </div>
+      </article>
     </>
   );
 };
