@@ -1,22 +1,17 @@
 import React from 'react';
 import Image from 'next/image';
 import dynamic from 'next/dynamic';
-import Container from '@components/container';
-// import { useRouter } from 'next/router'
-import { getBlogsList, getBlog } from '@lib/api/blogs';
-import type { GetStaticPaths, GetStaticProps } from 'next';
-import { useCreateSlug } from '@utils/use-create-slug';
 import Layout from '@components/layout';
+import Container from '@components/container';
+import type { GetStaticPaths, GetStaticProps } from 'next';
+import { getBlogsList, getBlogWithPath } from '@lib/api/blogs';
 
 type Props = {
   post: any
 }
 
-const PostDetail = ({ post }: Props) => {
-  // const router = useRouter()
+const Path = ({ post }: Props) => {
   const Date = dynamic(() => import('components/post_date'), { ssr: false }) as any;
-
-  // console.log('slug', post)
   return (
     <>
       <Layout>
@@ -80,20 +75,24 @@ const PostDetail = ({ post }: Props) => {
 export const getStaticPaths: GetStaticPaths = async() => {
   const res = await getBlogsList().then(res => res.data.items);
 
+  const paths = res.map((post: any) => {
+    const path = new URL(post.url);
+    const { pathname } = path;
+    return pathname;
+  }) || [];
+
   return {
-    paths: res.flatMap((post: any) => `/post/${useCreateSlug(post.title)}.id.${post.id}`) || [],
-    fallback: false
+    paths,
+    fallback: 'blocking'
   };
 };
 
 export const getStaticProps: GetStaticProps = async(context: any) => {
   const { params }: any = context;
-  const { slug } = params;
+  const { year, month, path } = params;
 
   try {
-    const id = slug.split('.id.')[1];
-    const res = await getBlog(id).then(res => res.data);
-
+    const res = await getBlogWithPath(`/${year}/${month}/${path}`).then(res => res.data);
     return {
       props: {
         post: res
@@ -107,4 +106,4 @@ export const getStaticProps: GetStaticProps = async(context: any) => {
   }
 };
 
-export default PostDetail;
+export default Path;

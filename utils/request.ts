@@ -1,6 +1,6 @@
 import axios, { AxiosRequestConfig } from 'axios';
-import { removeStorage } from '@utils/use-local-storage';
-import { getCookie, removeCookie } from '@utils/use-cookie';
+// import { removeStorage } from '@utils/use-local-storage';
+import { getCookie } from '@utils/use-cookie';
 
 // create an axios instance
 const request = axios.create({
@@ -33,37 +33,18 @@ request.interceptors.response.use(
     return Promise.resolve(response);
   },
   error => {
-    // console.log('debug error', error) // for debug
+    // console.log(error)
     const fallbackMessage = 'Request failed, please try again';
     let errorCode = 0;
-    let statusCode = 0;
+    let statusCode = 500;
     let message = fallbackMessage;
     let string = fallbackMessage;
     if (error.response) {
-      const errorError = error.response.data.error;
+      const errorError = error.response.data.error.error;
       let errArr = errorError;
       string = errArr;
 
-      if (error.response.status === 500) {
-        errorCode = 500;
-        statusCode = 500;
-        message = 'Internal Server Error';
-      }
-
-      if (error.response.status === 406) {
-        statusCode = error.response?.data?.error?.status_code;
-        message = error.response?.data?.error?.message;
-        errorCode = error.response?.data?.error?.error_code;
-      }
-
-      if (error.response?.data?.error?.message === 'Token Expired' && getCookie(`myolsera-customer`)) {
-        removeCookie(`myolsera-customer`);
-        removeStorage(`customer`);
-
-        window.location.reload();
-      }
-
-      if (typeof errorError !== 'string' && errorError !== undefined) {
+      if (typeof errorError !== 'string') {
         string = '';
         errArr = Object.values(errorError);
         for (let index = 0; index < errArr.length; index++) {
@@ -72,9 +53,9 @@ request.interceptors.response.use(
       }
 
       if (error.response) {
-        statusCode = error.response?.data?.error?.status_code;
-        message = error.response?.data?.error?.message;
-        errorCode = error.response?.data?.error?.error_code;
+        statusCode = error.response.data.error.status_code;
+        message = error.response.data.error.message;
+        errorCode = error.response.data.error.error_code;
       } else {
         string = message;
       }

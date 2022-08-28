@@ -3,7 +3,6 @@ import Image from 'next/image';
 import Link from 'next/link';
 import dynamic from 'next/dynamic';
 import { cx } from '@utils/classnames';
-import { useCreateSlug } from '@utils/use-create-slug';
 
 type Props = {
   post: any,
@@ -13,8 +12,7 @@ type Props = {
 
 const PostList: React.FC<Props> = ({ post, aspect, preloadImage }) => {
   const Date = dynamic(() => import('components/post_date'), { ssr: false }) as any;
-
-  console.log('post', post);
+  const path = new URL(post.url);
 
   return (
     <>
@@ -24,7 +22,7 @@ const PostList: React.FC<Props> = ({ post, aspect, preloadImage }) => {
             'relative overflow-hidden transition-all bg-gray-100 rounded-md dark:bg-gray-800   hover:scale-105',
             aspect === 'landscape' ? 'aspect-video' : 'aspect-square'
           )}>
-          <Link href={`/post/${useCreateSlug(post.title)}.id.${post.id}`}>
+          <Link href={path.pathname}>
             <a>
               <Image
                 src={post?.images[0].url}
@@ -42,7 +40,7 @@ const PostList: React.FC<Props> = ({ post, aspect, preloadImage }) => {
         </div>
         {/* <CategoryLabel categories={post.categories} /> */}
         <h2 className="mt-2 text-lg font-semibold tracking-normal text-brand-primary dark:text-white">
-          <Link href={`/post/${useCreateSlug(post.title)}.id.${post.id}`}>
+          <Link href={path.pathname}>
             <span
               className="     bg-gradient-to-r from-green-200 to-green-100 dark:from-purple-800 dark:to-purple-900
           bg-[length:0px_10px]
