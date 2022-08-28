@@ -142,7 +142,7 @@
       }
     }],
     "padded-blocks": [2, "never"],
-    "quotes": [2, "", {
+    "quotes": [2, "double", {
       "avoidEscape": true,
       "allowTemplateLiterals": true
     }],

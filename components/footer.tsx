@@ -11,35 +11,19 @@ export default function Footer(props: any) {
         rights reserved.
       </div>
       <div className="mt-1 text-sm text-center text-gray-500 dark:text-gray-600">
-        Made by{" "}
-        {/*  // ** 🙏  Can I ask you a favor? 🙏 **
-            // Please do not remove the below link.
-           // It helps us to grow & continue our work. Thank you.
-          // OR contact hello@web3templates.com for commercial license.  */}
-        <a
-          href="https://www.web3templates.com/?ref=stablo-template"
-          rel="noopener"
-          target="_blank">
-          Web3Templates
-        </a>
+        Made by hartomy.com
         {/* Do not remove above link */}
       </div>
       <div className="flex items-center justify-between mt-2">
         <div className="mt-5">
-          <a
-            href="https://vercel.com/?utm_source=web3templates&utm_campaign=oss"
-            target="_blank"
-            rel="noopener"
-            className="relative block w-44">
-            <Image
-              src={VercelLogo}
-              layout="fixed"
-              alt="Powered by Vercel"
-              unoptimized={true}
-              width="150"
-              height="25"
-            />
-          </a>
+          <Image
+            src={VercelLogo}
+            layout="fixed"
+            alt="Powered by Vercel"
+            unoptimized={true}
+            width="150"
+            height="25"
+          />
         </div>
         <ThemeSwitch />
       </div>

@@ -1,10 +1,10 @@
-import React from 'react'
-import Image from 'next/image';
-import dynamic from 'next/dynamic';
-import Container from '@components/container'
+import React from "react";
+import Image from "next/image";
+import dynamic from "next/dynamic";
+import Container from "@components/container";
 // import { useRouter } from 'next/router'
-import { getBlogsList, getBlog } from '@lib/api/blogs'
-import type { GetStaticPaths, GetStaticProps } from 'next'
+import { getBlogsList, getBlog } from "@lib/api/blogs";
+import type { GetStaticPaths, GetStaticProps } from "next";
 import { useCreateSlug } from "@utils/use-create-slug";
 import Layout from "@components/layout";
 
@@ -14,7 +14,7 @@ type Props = {
 
 const PostDetail = ({ post }: Props) => {
   // const router = useRouter()
-  const Date = dynamic(() => import('components/post_date'), { ssr: false }) as any
+  const Date = dynamic(() => import("components/post_date"), { ssr: false }) as any;
 
   // console.log('slug', post)
   return (
@@ -74,37 +74,37 @@ const PostDetail = ({ post }: Props) => {
         </Container>
       </Layout>
     </>
-  )
-}
+  );
+};
 
-export const getStaticPaths: GetStaticPaths = async () => {
-  const res = await getBlogsList().then(res => res.data.items)
+export const getStaticPaths: GetStaticPaths = async() => {
+  const res = await getBlogsList().then(res => res.data.items);
 
   return {
     paths: res.flatMap((post: any) => `/post/${useCreateSlug(post.title)}.id.${post.id}`) || [],
     fallback: false
-  }
-}
+  };
+};
 
-export const getStaticProps: GetStaticProps = async (context: any) => {
-  const { params, locale }: any = context
-  const { slug } = params
+export const getStaticProps: GetStaticProps = async(context: any) => {
+  const { params }: any = context;
+  const { slug } = params;
 
   try {
-    const id = slug.split('.id.')[1]
-    const res = await getBlog(id).then(res => res.data)
+    const id = slug.split(".id.")[1];
+    const res = await getBlog(id).then(res => res.data);
 
     return {
       props: {
         post: res
       },
       revalidate: 10
-    }
+    };
   } catch (error) {
     return {
-      notFound: true,
-    }
+      notFound: true
+    };
   }
-}
+};
 
-export default PostDetail
+export default PostDetail;

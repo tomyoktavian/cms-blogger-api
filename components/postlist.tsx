@@ -1,19 +1,18 @@
-import React from 'react'
+import React from "react";
 import Image from "next/image";
 import Link from "next/link";
-import dynamic from 'next/dynamic';
+import dynamic from "next/dynamic";
 import { cx } from "@utils/classnames";
 import { useCreateSlug } from "@utils/use-create-slug";
 
-type Props = { 
-  post: any, 
-  aspect?: 'landscape' | 'square', 
+type Props = {
+  post: any,
+  aspect?: "landscape" | "square",
   preloadImage?: boolean,
 }
 
 const PostList: React.FC<Props> = ({ post, aspect, preloadImage }) => {
-
-  const Date = dynamic(() => import('components/post_date'), { ssr: false }) as any
+  const Date = dynamic(() => import("components/post_date"), { ssr: false }) as any;
 
   return (
     <>
@@ -25,17 +24,17 @@ const PostList: React.FC<Props> = ({ post, aspect, preloadImage }) => {
           )}>
           <Link href={`/post/${useCreateSlug(post.title)}.id.${post.id}`}>
             <a>
-                <Image
-                  src={post?.images[0].url}
-                  alt={"Thumbnail"}
-                  // placeholder="blur"
-                  sizes="80vw"
-                  //sizes="(max-width: 640px) 90vw, 480px"
-                  layout="fill"
-                  objectFit="cover"
-                  priority={preloadImage ? true : false}
-                  className="transition-all"
-                />
+              <Image
+                src={post?.images[0].url}
+                alt={"Thumbnail"}
+                // placeholder="blur"
+                sizes="80vw"
+                // sizes="(max-width: 640px) 90vw, 480px"
+                layout="fill"
+                objectFit="cover"
+                priority={!!preloadImage}
+                className="transition-all"
+              />
             </a>
           </Link>
         </div>
@@ -68,15 +67,15 @@ const PostList: React.FC<Props> = ({ post, aspect, preloadImage }) => {
         <div className="flex items-center mt-3 space-x-3 text-gray-500 dark:text-gray-400">
           <div className="flex items-center gap-3">
             <div className="relative flex-shrink-0 w-5 h-5">
-                <Image
-                  src={`http:${post?.author?.image.url}`}
-                  objectFit="cover"
-                  layout="fill"
-                  alt={post?.author?.displayName}
-                  // placeholder="blur"
-                  sizes="30px"
-                  className="rounded-full"
-                />
+              <Image
+                src={`http:${post?.author?.image.url}`}
+                objectFit="cover"
+                layout="fill"
+                alt={post?.author?.displayName}
+                // placeholder="blur"
+                sizes="30px"
+                className="rounded-full"
+              />
             </div>
             <span className="text-sm">{post.author.displayName}</span>
           </div>
@@ -87,7 +86,7 @@ const PostList: React.FC<Props> = ({ post, aspect, preloadImage }) => {
         </div>
       </div>
     </>
-  )
-}
+  );
+};
 
-export default PostList
+export default PostList;

@@ -1,4 +1,4 @@
-import React from 'react'
+import React from "react";
 import Link from "next/link";
 
 type Props = {}
@@ -44,14 +44,14 @@ const Navbar = (props: Props) => {
               </div>
             </ul>
             <div className="hidden mx-3 gap-3 lg:flex">
-              <a className="px-5 py-1.5 text-gray-500 border border-gray-400 rounded-md font-medium hover:border-gray-700" href="/#">Login</a>
-              <a className="px-5 py-1.5 text-white bg-indigo-900 rounded-md font-medium" href="/#">Register</a>
+              <span className="px-5 py-1.5 text-gray-500 border border-gray-400 rounded-md font-medium hover:border-gray-700">Login</span>
+              <span className="px-5 py-1.5 text-white bg-indigo-900 rounded-md font-medium">Register</span>
             </div>
           </div>
         </nav>
       </div>
     </>
-  )
-}
+  );
+};
 
-export default Navbar
+export default Navbar;

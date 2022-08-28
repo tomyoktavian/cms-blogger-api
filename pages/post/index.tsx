@@ -1,11 +1,11 @@
-import React from 'react'
+import React from "react";
 
 type Props = {}
 
 const PostList = (props: Props) => {
   return (
     <div>PostList</div>
-  )
-}
+  );
+};
 
-export default PostList
+export default PostList;

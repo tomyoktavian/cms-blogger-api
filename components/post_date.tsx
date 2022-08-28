@@ -4,18 +4,17 @@ type Props = {
 }
 
 const PostDate = ({ date, className }: Props) => {
-
   const thisdate = new Date(date);
-  const dateString = thisdate.toLocaleDateString('en-US', {
-    month: 'short',
-    day: 'numeric',
-    year: 'numeric',
+  const dateString = thisdate.toLocaleDateString("en-US", {
+    month: "short",
+    day: "numeric",
+    year: "numeric"
   });
   return <time
     className={className}
     dateTime={date}>
     {dateString}
-  </time>
-}
+  </time>;
+};
 
-export default PostDate
+export default PostDate;
