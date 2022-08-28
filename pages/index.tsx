@@ -40,7 +40,7 @@ const Home: NextPage = ({blog, posts}: any) => {
 
 export const getStaticProps: GetStaticProps = async (context: any) => {
   try {
-    const params = { 'fetchImages': true }
+    const params = { 'fetchImages': true, 'fetchBodies': false }
     const res = await getBlogsList(params).then(res => res.data)
 
     return {
