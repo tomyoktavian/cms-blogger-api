@@ -1,11 +1,11 @@
-import type { NextPage } from "next";
+import type { NextPage } from 'next';
 // import Head from 'next/head'
 // import Image from 'next/image'
-import Container from "@components/container";
-import { getBlogsList } from "@lib/api/blogs";
-import PostList from "@components/postlist";
-import Layout from "@components/layout";
-import type { GetStaticProps } from "next";
+import Container from '@components/container';
+import { getBlogsList } from '@lib/api/blogs';
+import PostList from '@components/postlist';
+import Layout from '@components/layout';
+import type { GetStaticProps } from 'next';
 
 const Home: NextPage = ({ blog, posts }: any) => {
   // console.log('blog', blog)
@@ -40,7 +40,7 @@ const Home: NextPage = ({ blog, posts }: any) => {
 
 export const getStaticProps: GetStaticProps = async(context: any) => {
   try {
-    const params = { "fetchImages": true, "fetchBodies": false };
+    const params = { 'fetchImages': true, 'fetchBodies': false };
     const res = await getBlogsList(params).then(res => res.data);
 
     return {

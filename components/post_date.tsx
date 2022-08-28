@@ -5,10 +5,10 @@ type Props = {
 
 const PostDate = ({ date, className }: Props) => {
   const thisdate = new Date(date);
-  const dateString = thisdate.toLocaleDateString("en-US", {
-    month: "short",
-    day: "numeric",
-    year: "numeric"
+  const dateString = thisdate.toLocaleDateString('en-US', {
+    month: 'short',
+    day: 'numeric',
+    year: 'numeric'
   });
   return <time
     className={className}

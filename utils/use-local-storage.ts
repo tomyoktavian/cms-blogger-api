@@ -1,13 +1,13 @@
-import { useState } from "react";
+import { useState } from 'react';
 
 export const setStorage = (key: string, value: any) => {
-  if (typeof window !== "undefined") {
+  if (typeof window !== 'undefined') {
     window.localStorage.setItem(key, JSON.stringify(value));
   }
 };
 
 export const getStorage = (key: string, initialValue: any) => {
-  if (typeof window !== "undefined") {
+  if (typeof window !== 'undefined') {
     try {
       return JSON.parse(window.localStorage.getItem(key) || initialValue);
     } catch (error) {
@@ -17,7 +17,7 @@ export const getStorage = (key: string, initialValue: any) => {
 };
 
 export const removeStorage = (key: string) => {
-  if (typeof window !== "undefined") {
+  if (typeof window !== 'undefined') {
     window.localStorage.removeItem(key);
   }
 };
@@ -26,7 +26,7 @@ function useLocalStorage<T>(key: string, initialValue: T) {
   // State to store our value
   // Pass initial state function to useState so logic is only executed once
   const [storedValue, setStoredValue] = useState<T>(() => {
-    if (typeof window === "undefined") {
+    if (typeof window === 'undefined') {
       return initialValue;
     }
     try {
@@ -50,7 +50,7 @@ function useLocalStorage<T>(key: string, initialValue: T) {
       // Save state
       setStoredValue(valueToStore);
       // Save to local storage
-      if (typeof window !== "undefined") {
+      if (typeof window !== 'undefined') {
         window.localStorage.setItem(key, JSON.stringify(valueToStore));
       }
     } catch (error) {

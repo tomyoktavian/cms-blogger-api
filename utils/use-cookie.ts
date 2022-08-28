@@ -1,6 +1,6 @@
-import { useState } from "react";
+import { useState } from 'react';
 
-const isBrowser = typeof window !== "undefined";
+const isBrowser = typeof window !== 'undefined';
 
 interface stringifyOptionsTypes {
   [x: string]: any
@@ -8,7 +8,7 @@ interface stringifyOptionsTypes {
 
 export function stringifyOptions(options: stringifyOptionsTypes) {
   return Object.keys(options).reduce((acc, key) => {
-    if (key === "days") {
+    if (key === 'days') {
       return acc;
     } else {
       if (options[key] === false) {
@@ -19,7 +19,7 @@ export function stringifyOptions(options: stringifyOptionsTypes) {
         return `${acc}; ${key}=${options[key]}`;
       }
     }
-  }, "");
+  }, '');
 }
 
 export const setCookie = (name: string, value: string | number | boolean, options: any) => {
@@ -27,7 +27,7 @@ export const setCookie = (name: string, value: string | number | boolean, option
 
   const optionsWithDefaults = {
     days: 7,
-    path: "/",
+    path: '/',
     ...options
   };
 
@@ -35,16 +35,16 @@ export const setCookie = (name: string, value: string | number | boolean, option
     Date.now() + optionsWithDefaults.days * 864e5
   ).toUTCString();
 
-  document.cookie = name + "=" + encodeURIComponent(value) + "; expires=" + expires + stringifyOptions(optionsWithDefaults);
+  document.cookie = name + '=' + encodeURIComponent(value) + '; expires=' + expires + stringifyOptions(optionsWithDefaults);
 };
 
-export const getCookie = (name: string, initialValue = "") => {
+export const getCookie = (name: string, initialValue = '') => {
   return (
     (isBrowser &&
-      document.cookie.split("; ").reduce((r, v) => {
-        const parts = v.split("=");
+      document.cookie.split('; ').reduce((r, v) => {
+        const parts = v.split('=');
         return parts[0] === name ? decodeURIComponent(parts[1]) : r;
-      }, "")) ||
+      }, '')) ||
     initialValue
   );
 };

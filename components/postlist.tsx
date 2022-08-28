@@ -1,32 +1,34 @@
-import React from "react";
-import Image from "next/image";
-import Link from "next/link";
-import dynamic from "next/dynamic";
-import { cx } from "@utils/classnames";
-import { useCreateSlug } from "@utils/use-create-slug";
+import React from 'react';
+import Image from 'next/image';
+import Link from 'next/link';
+import dynamic from 'next/dynamic';
+import { cx } from '@utils/classnames';
+import { useCreateSlug } from '@utils/use-create-slug';
 
 type Props = {
   post: any,
-  aspect?: "landscape" | "square",
+  aspect?: 'landscape' | 'square',
   preloadImage?: boolean,
 }
 
 const PostList: React.FC<Props> = ({ post, aspect, preloadImage }) => {
-  const Date = dynamic(() => import("components/post_date"), { ssr: false }) as any;
+  const Date = dynamic(() => import('components/post_date'), { ssr: false }) as any;
+
+  console.log('post', post);
 
   return (
     <>
       <div className="cursor-pointer group">
         <div
           className={cx(
-            "relative overflow-hidden transition-all bg-gray-100 rounded-md dark:bg-gray-800   hover:scale-105",
-            aspect === "landscape" ? "aspect-video" : "aspect-square"
+            'relative overflow-hidden transition-all bg-gray-100 rounded-md dark:bg-gray-800   hover:scale-105',
+            aspect === 'landscape' ? 'aspect-video' : 'aspect-square'
           )}>
           <Link href={`/post/${useCreateSlug(post.title)}.id.${post.id}`}>
             <a>
               <Image
                 src={post?.images[0].url}
-                alt={"Thumbnail"}
+                alt={'Thumbnail'}
                 // placeholder="blur"
                 sizes="80vw"
                 // sizes="(max-width: 640px) 90vw, 480px"

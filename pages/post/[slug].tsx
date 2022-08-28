@@ -1,12 +1,12 @@
-import React from "react";
-import Image from "next/image";
-import dynamic from "next/dynamic";
-import Container from "@components/container";
+import React from 'react';
+import Image from 'next/image';
+import dynamic from 'next/dynamic';
+import Container from '@components/container';
 // import { useRouter } from 'next/router'
-import { getBlogsList, getBlog } from "@lib/api/blogs";
-import type { GetStaticPaths, GetStaticProps } from "next";
-import { useCreateSlug } from "@utils/use-create-slug";
-import Layout from "@components/layout";
+import { getBlogsList, getBlog } from '@lib/api/blogs';
+import type { GetStaticPaths, GetStaticProps } from 'next';
+import { useCreateSlug } from '@utils/use-create-slug';
+import Layout from '@components/layout';
 
 type Props = {
   post: any
@@ -14,7 +14,7 @@ type Props = {
 
 const PostDetail = ({ post }: Props) => {
   // const router = useRouter()
-  const Date = dynamic(() => import("components/post_date"), { ssr: false }) as any;
+  const Date = dynamic(() => import('components/post_date'), { ssr: false }) as any;
 
   // console.log('slug', post)
   return (
@@ -91,7 +91,7 @@ export const getStaticProps: GetStaticProps = async(context: any) => {
   const { slug } = params;
 
   try {
-    const id = slug.split(".id.")[1];
+    const id = slug.split('.id.')[1];
     const res = await getBlog(id).then(res => res.data);
 
     return {

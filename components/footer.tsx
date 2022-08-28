@@ -1,7 +1,7 @@
-import Container from "@components/container";
-import ThemeSwitch from "@components/themeSwitch";
-import Image from "next/image";
-import VercelLogo from "public/vercel.svg";
+import Container from '@components/container';
+import ThemeSwitch from '@components/themeSwitch';
+import Image from 'next/image';
+import VercelLogo from 'public/vercel.svg';
 
 export default function Footer(props: any) {
   return (

@@ -1,6 +1,6 @@
-import axios, { AxiosRequestConfig } from "axios";
-import { removeStorage } from "@utils/use-local-storage";
-import { getCookie, removeCookie } from "@utils/use-cookie";
+import axios, { AxiosRequestConfig } from 'axios';
+import { removeStorage } from '@utils/use-local-storage';
+import { getCookie, removeCookie } from '@utils/use-cookie';
 
 // create an axios instance
 const request = axios.create({
@@ -12,11 +12,11 @@ const request = axios.create({
 request.interceptors.request.use((config: AxiosRequestConfig | any) => {
   if (getCookie(`myolsera-customer`)) {
     const tokenCustomer = JSON.parse(getCookie(`myolsera-customer`));
-    config.headers["Authorization"] = `Bearer ${tokenCustomer?.access_token}`;
+    config.headers['Authorization'] = `Bearer ${tokenCustomer?.access_token}`;
   } else {
     if (getCookie(`myolsera-client`)) {
       const tokenClient = JSON.parse(getCookie(`myolsera-client`));
-      config.headers["Authorization"] = "Bearer " + tokenClient?.access_token;
+      config.headers['Authorization'] = 'Bearer ' + tokenClient?.access_token;
     }
   }
   return config;
@@ -34,7 +34,7 @@ request.interceptors.response.use(
   },
   error => {
     // console.log('debug error', error) // for debug
-    const fallbackMessage = "Request failed, please try again";
+    const fallbackMessage = 'Request failed, please try again';
     let errorCode = 0;
     let statusCode = 0;
     let message = fallbackMessage;
@@ -47,7 +47,7 @@ request.interceptors.response.use(
       if (error.response.status === 500) {
         errorCode = 500;
         statusCode = 500;
-        message = "Internal Server Error";
+        message = 'Internal Server Error';
       }
 
       if (error.response.status === 406) {
@@ -56,18 +56,18 @@ request.interceptors.response.use(
         errorCode = error.response?.data?.error?.error_code;
       }
 
-      if (error.response?.data?.error?.message === "Token Expired" && getCookie(`myolsera-customer`)) {
+      if (error.response?.data?.error?.message === 'Token Expired' && getCookie(`myolsera-customer`)) {
         removeCookie(`myolsera-customer`);
         removeStorage(`customer`);
 
         window.location.reload();
       }
 
-      if (typeof errorError !== "string" && errorError !== undefined) {
-        string = "";
+      if (typeof errorError !== 'string' && errorError !== undefined) {
+        string = '';
         errArr = Object.values(errorError);
         for (let index = 0; index < errArr.length; index++) {
-          string += "- " + errArr[index];
+          string += '- ' + errArr[index];
         }
       }
 
