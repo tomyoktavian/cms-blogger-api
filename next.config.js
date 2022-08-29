@@ -8,9 +8,14 @@ const nextConfig = {
       '2.bp.blogspot.com',
       '3.bp.blogspot.com',
       '4.bp.blogspot.com',
-      '5.bp.blogspot.com',
-    ],
+      '5.bp.blogspot.com'
+    ]
   },
-}
+  experimental: {
+    images: {
+      unoptimized: true
+    }
+  }
+};
 
-module.exports = nextConfig
+module.exports = nextConfig;
