@@ -1,10 +1,11 @@
 import React from 'react';
+import Head from 'next/head';
 import Image from 'next/image';
 import dynamic from 'next/dynamic';
 import Layout from '@components/layout';
 import Container from '@components/container';
 import type { GetStaticPaths, GetStaticProps } from 'next';
-import { getBlogsList, getBlogWithPath } from '@lib/api/blogs';
+import { getBlogsList, getBlogWithPath, getBlog } from '@lib/api/blogs';
 
 type Props = {
   post: any
@@ -12,8 +13,28 @@ type Props = {
 
 const Path = ({ post }: Props) => {
   const Date = dynamic(() => import('components/post_date'), { ssr: false }) as any;
+
+  const trimString = function(string: string, length: number) {
+    return string.length > length
+      ? string.substring(0, length) + '...'
+      : string;
+  };
+
+  // console.log('content', post);
   return (
     <>
+      <Head>
+        <title>{post.title}</title>
+        <meta name="title" content={post.title}/>
+        <meta name="description" content={trimString(post.content.replace(/(<([^>]+)>)/gi, ''), 155)}/>
+
+        <meta property="og:type" content="website"/>
+        <meta property="og:url" content="https://metatags.io/"/>
+        <meta property="og:title" content={post.title}/>
+        <meta property="og:description" content={trimString(post.content.replace(/(<([^>]+)>)/gi, ''), 155)}/>
+        <meta property="og:image" content={post.images[0].url}/>
+
+      </Head>
       <Layout>
         <Container className="!pt-0">
           <div className="max-w-screen-md mx-auto ">
@@ -62,7 +83,7 @@ const Path = ({ post }: Props) => {
 
         <Container>
           <article className="max-w-screen-md mx-auto ">
-            <div className="mx-auto my-3 prose prose-base dark:prose-invert prose-a:text-blue-500"
+            <div id="body" className="mx-auto my-3 prose prose-base dark:prose-invert prose-a:text-blue-500"
               dangerouslySetInnerHTML={{ __html: post.content }}
             ></div>
           </article>
@@ -92,10 +113,11 @@ export const getStaticProps: GetStaticProps = async(context: any) => {
   const { year, month, path } = params;
 
   try {
-    const res = await getBlogWithPath(`/${year}/${month}/${path}`).then(res => res.data);
+    const res = await getBlogWithPath(`/${year}/${month}/${path}`).then(res => res.data.id);
+    const data = await getBlog(res).then(res => res.data);
     return {
       props: {
-        post: res
+        post: data
       },
       revalidate: 10
     };
