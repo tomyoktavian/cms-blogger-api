@@ -5,7 +5,7 @@ import Container from '@components/container';
 import { getBlogsList } from '@lib/api/blogs';
 import PostList from '@components/postlist';
 import Layout from '@components/layout';
-import type { GetStaticProps } from 'next';
+import type { GetServerSideProps } from 'next';
 
 const Home: NextPage = ({ blog, posts }: any) => {
   // console.log('blog', blog)
@@ -38,23 +38,16 @@ const Home: NextPage = ({ blog, posts }: any) => {
   );
 };
 
-export const getStaticProps: GetStaticProps = async(context: any) => {
-  try {
-    const params = { 'fetchImages': true, 'fetchBodies': false };
-    const res = await getBlogsList(params).then(res => res.data);
+export const getServerSideProps: GetServerSideProps = async(context: any) => {
+  const params = { 'fetchImages': true, 'fetchBodies': false };
+  const res = await getBlogsList(params).then(res => res.data);
 
-    return {
-      props: {
-        blog: res,
-        posts: res.items
-      },
-      revalidate: 10
-    };
-  } catch (error) {
-    return {
-      notFound: true
-    };
-  }
+  return {
+    props: {
+      blog: res,
+      posts: res.items
+    }
+  };
 };
 
 export default Home;
