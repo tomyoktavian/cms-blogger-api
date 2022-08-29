@@ -2,7 +2,7 @@ import request from '@utils/request';
 
 export const getBlogsList = (params?: any) => {
   return request({
-    url: `/posts?key=${process.env.BLOGGER_API_KEY}`,
+    url: `/posts`,
     method: 'get',
     params
   });
@@ -10,7 +10,7 @@ export const getBlogsList = (params?: any) => {
 
 export const getBlog = (id: string, params?: any) => {
   return request({
-    url: `/posts/${id}?fetchImages=true&key=${process.env.BLOGGER_API_KEY}`,
+    url: `/posts/${id}?fetchImages=true`,
     method: 'get',
     params
   });
@@ -18,7 +18,7 @@ export const getBlog = (id: string, params?: any) => {
 
 export const getBlogWithPath = (path: string, params?: any) => {
   return request({
-    url: `/posts/bypath?fetchImages=true&path=${path}&key=${process.env.BLOGGER_API_KEY}`,
+    url: `/posts/bypath?fetchImages=true&path=${path}`,
     method: 'get',
     params
   });

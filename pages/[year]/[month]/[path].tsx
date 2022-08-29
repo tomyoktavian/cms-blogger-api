@@ -94,7 +94,7 @@ const Path = ({ post }: Props) => {
 };
 
 export const getStaticPaths: GetStaticPaths = async() => {
-  const res = await getBlogsList().then(res => res.data.items);
+  const res = await getBlogsList({ key: process.env.BLOGGER_API_KEY }).then(res => res.data.items);
 
   const paths = res.map((post: any) => {
     const path = new URL(post.url);
@@ -113,8 +113,8 @@ export const getStaticProps: GetStaticProps = async(context: any) => {
   const { year, month, path } = params;
 
   try {
-    const res = await getBlogWithPath(`/${year}/${month}/${path}`).then(res => res.data.id);
-    const data = await getBlog(res).then(res => res.data);
+    const id = await getBlogWithPath(`/${year}/${month}/${path}`, { key: process.env.BLOGGER_API_KEY }).then(res => res.data.id);
+    const data = await getBlog(id, { key: process.env.BLOGGER_API_KEY }).then(res => res.data);
     return {
       props: {
         post: data
