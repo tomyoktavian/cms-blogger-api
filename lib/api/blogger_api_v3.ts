@@ -2,7 +2,7 @@ import request from '@utils/request';
 
 export const blogs = (params?: any) => {
   return request({
-    url: `?key=${process.env.BLOGGER_API_KEY}`,
+    url: `/`,
     method: 'get',
     params
   });

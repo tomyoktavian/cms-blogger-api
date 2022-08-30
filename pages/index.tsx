@@ -72,7 +72,7 @@ const Home: NextPage = ({ blog, posts, post }: any) => {
             {nextPage !== '' && (
               <div className="flex justify-center mt-10">
                 <button
-                  className="bg-brand-primary hover:bg-brand-primary-dark text-white font-bold py-2 px-4 rounded"
+                  className="bg-gray-900 dark:bg-zinc-50 rounded dark:text-black text-white font-bold py-2 px-4 rounded"
                   onClick={loadMore}
                 >
               Load more
@@ -88,12 +88,12 @@ const Home: NextPage = ({ blog, posts, post }: any) => {
 
 export const getStaticProps: GetStaticProps = async(context: any) => {
   try {
-    const blog = await blogs().then((res: any) => res.data);
+    const data = await blogs({ key: process.env.BLOGGER_API_KEY }).then((res: any) => res.data);
     const params = { 'fetchImages': true, 'fetchBodies': false, key: process.env.BLOGGER_API_KEY };
     const res = await getPosts(params).then(res => res.data);
     return {
       props: {
-        blog,
+        blog: data,
         posts: res,
         post: res.items
       },
