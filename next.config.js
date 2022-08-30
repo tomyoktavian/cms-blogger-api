@@ -10,11 +10,6 @@ const nextConfig = {
       '4.bp.blogspot.com',
       '5.bp.blogspot.com'
     ]
-  },
-  experimental: {
-    images: {
-      unoptimized: true
-    }
   }
 };
 
