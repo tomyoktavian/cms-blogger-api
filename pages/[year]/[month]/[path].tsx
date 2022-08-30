@@ -1,4 +1,5 @@
 import React from 'react';
+import Link from 'next/link';
 import Head from 'next/head';
 import Image from 'next/image';
 import dynamic from 'next/dynamic';
@@ -29,7 +30,7 @@ const Path = ({ post }: Props) => {
         <meta name="description" content={trimString(post.content.replace(/(<([^>]+)>)/gi, ''), 155)}/>
 
         <meta property="og:type" content="website"/>
-        <meta property="og:url" content="https://metatags.io/"/>
+        <meta property="og:url" content="https://blog.mediasolutif.com/"/>
         <meta property="og:title" content={post.title}/>
         <meta property="og:description" content={trimString(post.content.replace(/(<([^>]+)>)/gi, ''), 155)}/>
         <meta property="og:image" content={post.images[0].url}/>
@@ -41,11 +42,11 @@ const Path = ({ post }: Props) => {
             <div className="text-center">
               {/* <CategoryLabel categories={post.categories} /> */}
               {post.labels.map((label: any, index: any) => (
-                <span
-                  key={index}
-                  className="inline-block px-3 py-1 mb-4 text-xs font-medium leading-6 text-green-800 uppercase bg-green-100 rounded-full dark:bg-green-800 dark:text-green-100">
-                  {label}
-                </span>
+                <Link key={index} href={`/search/label/${label}`}>
+                  <a className="inline-block px-3 py-1 mb-4 text-xs font-medium leading-6 text-green-800 uppercase bg-green-100 rounded-full dark:bg-green-800 dark:text-green-100">
+                    {label}
+                  </a>
+                </Link>
               ))}
             </div>
 

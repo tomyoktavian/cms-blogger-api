@@ -24,17 +24,31 @@ const PostList: React.FC<Props> = ({ post, aspect, preloadImage }) => {
           )}>
           <Link href={path.pathname}>
             <a>
-              <Image
-                src={post?.images[0].url}
-                alt={'Thumbnail'}
-                // placeholder="blur"
-                sizes="80vw"
-                // sizes="(max-width: 640px) 90vw, 480px"
-                layout="fill"
-                objectFit="cover"
-                priority={!!preloadImage}
-                className="transition-all"
-              />
+              {post?.images?.length > 0 ? (
+                <Image
+                  src={post?.images[0].url}
+                  alt={'Thumbnail'}
+                  // placeholder="blur"
+                  sizes="80vw"
+                  // sizes="(max-width: 640px) 90vw, 480px"
+                  layout="fill"
+                  objectFit="cover"
+                  priority={!!preloadImage}
+                  className="transition-all"
+                />
+              ) : (
+                <Image
+                  src={'https://via.placeholder.com/320x320?text=No-Image'}
+                  alt={'Thumbnail'}
+                  // placeholder="blur"
+                  sizes="80vw"
+                  // sizes="(max-width: 640px) 90vw, 480px"
+                  layout="fill"
+                  objectFit="cover"
+                  priority={!!preloadImage}
+                  className="transition-all"
+                />
+              )}
             </a>
           </Link>
         </div>

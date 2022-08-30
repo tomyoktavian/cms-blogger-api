@@ -8,7 +8,8 @@ const nextConfig = {
       '2.bp.blogspot.com',
       '3.bp.blogspot.com',
       '4.bp.blogspot.com',
-      '5.bp.blogspot.com'
+      '5.bp.blogspot.com',
+      'via.placeholder.com'
     ]
   },
   experimental: {

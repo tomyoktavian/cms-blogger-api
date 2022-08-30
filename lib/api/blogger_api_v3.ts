@@ -16,6 +16,14 @@ export const getPosts = (params?: any) => {
   });
 };
 
+export const serachPosts = (params?: any) => {
+  return request({
+    url: `/posts/search`,
+    method: 'get',
+    params
+  });
+};
+
 export const getPost = (id: string, params?: any) => {
   return request({
     url: `/posts/${id}?fetchImages=true`,

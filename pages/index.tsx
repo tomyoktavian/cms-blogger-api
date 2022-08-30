@@ -15,7 +15,7 @@ const Home: NextPage = ({ blog, posts, post }: any) => {
 
   React.useEffect(() => {
     setDataPost(post);
-    setNextPage(posts.nextPageToken);
+    setNextPage(posts.nextPageToken || '');
   }, [posts, post]);
 
   const loadMore = () => {
@@ -41,7 +41,7 @@ const Home: NextPage = ({ blog, posts, post }: any) => {
         <meta name="description" content={blog.description} />
 
         <meta property="og:type" content="website" />
-        <meta property="og:url" content="https://metatags.io/" />
+        <meta property="og:url" content="https://blog.mediasolutif.com/" />
         <meta property="og:title" content={blog.name} />
         <meta property="og:description" content={blog.description} />
 
