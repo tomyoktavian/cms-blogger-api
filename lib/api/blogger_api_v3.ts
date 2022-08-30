@@ -9,6 +9,14 @@ export const blogs = (params?: any) => {
   });
 };
 
+export const getPostsUrl = (params?: any) => {
+  return request({
+    url: `/posts?fields=items(url)`,
+    method: 'get',
+    params
+  });
+};
+
 export const getPosts = (params?: any) => {
   return request({
     url: `/posts?fields=nextPageToken,items(id,title,location(name,lat,lng),url,content,labels,published,updated,images,author(displayName,image),replies)`,
@@ -35,7 +43,7 @@ export const getPost = (id: string, params?: any) => {
 
 export const getPostWithPath = (path: string, params?: any) => {
   return request({
-    url: `/posts/bypath?fiealds=id,title,location(name,lat,lng),url,content,labels,published,updated,images,author(displayName,image),replies&fetchImages=true&path=${path}`,
+    url: `/posts/bypath?path=${path}`,
     method: 'get',
     params
   });

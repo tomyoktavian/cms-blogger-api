@@ -6,7 +6,7 @@ import dynamic from 'next/dynamic';
 import Layout from '@components/layout';
 import Container from '@components/container';
 import type { GetStaticPaths, GetStaticProps } from 'next';
-import { getPosts, getPostWithPath, getPost } from '@lib/api/blogger_api_v3';
+import { getPostsUrl, getPostWithPath, getPost } from '@lib/api/blogger_api_v3';
 
 type Props = {
   post: any
@@ -95,7 +95,7 @@ const Path = ({ post }: Props) => {
 };
 
 export const getStaticPaths: GetStaticPaths = async() => {
-  const res = await getPosts({ key: process.env.BLOGGER_API_KEY }).then(res => res.data.items);
+  const res = await getPostsUrl({ key: process.env.BLOGGER_API_KEY }).then(res => res.data.items);
 
   const paths = res.map((post: any) => {
     const path = new URL(post.url);
@@ -114,8 +114,8 @@ export const getStaticProps: GetStaticProps = async(context: any) => {
   const { year, month, path } = params;
 
   try {
-    const id = await getPostWithPath(`/${year}/${month}/${path}`, { key: process.env.BLOGGER_API_KEY }).then(res => res.data.id);
-    const data = await getPost(id, { key: process.env.BLOGGER_API_KEY }).then(res => res.data);
+    const id = await getPostWithPath(`/${year}/${month}/${path}`, { fields: 'id', key: process.env.BLOGGER_API_KEY }).then(res => res.data.id);
+    const data = await getPost(id, { fields: 'id,title,location(name,lat,lng),url,content,labels,published,updated,images,author(displayName,image),replies', key: process.env.BLOGGER_API_KEY }).then(res => res.data);
     return {
       props: {
         post: data
@@ -123,6 +123,7 @@ export const getStaticProps: GetStaticProps = async(context: any) => {
       revalidate: 10
     };
   } catch (error) {
+    console.log(error);
     return {
       notFound: true
     };
