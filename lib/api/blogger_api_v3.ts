@@ -1,6 +1,6 @@
 import request from '@utils/request';
 
-// https://www.googleapis.com/blogger/v3/blogs/5851741928033295707/posts?fields=nextPageToken,items(id,title,location(name,lat,lng),url,content,labels,published,updated,images,author(displayName,image),replies)&fetchImages=true&fetchBodies=true&key=AIzaSyAcnifSirW7-k28f6AE1ZUJofl9VXskrV0
+// https://www.googleapis.com/blogger/v3/blogs/5851741928033295707/posts?fields=nextPageToken,items(id,title,location(name,lat,lng),url,content,labels,published,updated,images,author(displayName,image),replies(totalItems))&fetchImages=true&fetchBodies=true&key=AIzaSyAcnifSirW7-k28f6AE1ZUJofl9VXskrV0
 export const blogs = (params?: any) => {
   return request({
     url: `?fields=name,description,posts(totalItems),pages(totalItems),locale`,
@@ -19,7 +19,7 @@ export const getPostsUrl = (params?: any) => {
 
 export const getPosts = (params?: any) => {
   return request({
-    url: `/posts?fields=nextPageToken,items(id,title,location(name,lat,lng),url,content,labels,published,updated,images,author(displayName,image),replies)`,
+    url: `/posts?fields=nextPageToken,items(id,title,location(name,lat,lng),url,content,labels,published,updated,images,author(displayName,image),replies(totalItems))`,
     method: 'get',
     params
   });
@@ -27,7 +27,7 @@ export const getPosts = (params?: any) => {
 
 export const serachPosts = (params?: any) => {
   return request({
-    url: `/posts/search?fields=nextPageToken,items(id,title,location(name,lat,lng),url,content,labels,published,updated,images,author(displayName,image),replies)`,
+    url: `/posts/search?fields=nextPageToken,items(id,title,location(name,lat,lng),url,content,labels,published,updated,images,author(displayName,image),replies(totalItems))`,
     method: 'get',
     params
   });
@@ -35,7 +35,7 @@ export const serachPosts = (params?: any) => {
 
 export const getPost = (id: string, params?: any) => {
   return request({
-    url: `/posts/${id}?fiealds=id,title,location(name,lat,lng),url,content,labels,published,updated,images,author(displayName,image),replies&fetchImages=true`,
+    url: `/posts/${id}?fiealds=id,title,location(name,lat,lng),url,content,labels,published,updated,images,author(displayName,image),replies(totalItems)&fetchImages=true`,
     method: 'get',
     params
   });
