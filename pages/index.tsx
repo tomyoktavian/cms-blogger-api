@@ -2,11 +2,18 @@ import React from 'react';
 import type { NextPage } from 'next';
 import Head from 'next/head';
 // import Image from 'next/image'
+import absoluteUrl from 'next-absolute-url';
 import Container from '@components/container';
 import PostList from '@components/postlist';
 import Layout from '@components/layout';
-import { blogs, getPosts } from '@lib/api/blogger_api_v3';
-import type { GetStaticProps } from 'next';
+import {
+  // getPosts,
+  blogs
+} from '@lib/api/blogger_api_v3';
+import type {
+  // GetStaticProps,
+  GetServerSideProps
+} from 'next';
 import axios from 'axios';
 
 const Home: NextPage = ({ blog, posts, post }: any) => {
@@ -86,24 +93,38 @@ const Home: NextPage = ({ blog, posts, post }: any) => {
   );
 };
 
-export const getStaticProps: GetStaticProps = async(context: any) => {
-  try {
-    const data = await blogs({ key: process.env.BLOGGER_API_KEY }).then((res: any) => res.data);
-    const params = { 'fetchImages': true, 'fetchBodies': false, key: process.env.BLOGGER_API_KEY };
-    const res = await getPosts(params).then(res => res.data);
-    return {
-      props: {
-        blog: data,
-        posts: res,
-        post: res.items
-      },
-      revalidate: 10
-    };
-  } catch (error) {
-    return {
-      notFound: true
-    };
-  }
+// export const getStaticProps: GetStaticProps = async(context: any) => {
+//   try {
+//     const data = await blogs({ key: process.env.BLOGGER_API_KEY }).then((res: any) => res.data);
+//     const params = { 'fetchImages': true, 'fetchBodies': false, key: process.env.BLOGGER_API_KEY };
+//     const res = await getPosts(params).then(res => res.data);
+//     return {
+//       props: {
+//         blog: data,
+//         posts: res,
+//         post: res.items
+//       },
+//       revalidate: 10
+//     };
+//   } catch (error) {
+//     return {
+//       notFound: true
+//     };
+//   }
+// };
+
+export const getServerSideProps: GetServerSideProps = async(context: any) => {
+  const { origin } = absoluteUrl(context.req);
+  const data = await blogs({ key: process.env.BLOGGER_API_KEY }).then((res: any) => res.data);
+  const params = { 'fetchImages': true, 'fetchBodies': false, key: process.env.BLOGGER_API_KEY };
+  const res = await axios.get(`${origin}/api/posts`, { params }).then((res: any) => res.data);
+  return {
+    props: {
+      blog: data,
+      posts: res,
+      post: res?.items || []
+    }
+  };
 };
 
 export default Home;

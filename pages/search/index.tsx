@@ -3,10 +3,11 @@ import Head from 'next/head';
 import Layout from '@components/layout';
 import Container from '@components/container';
 import PostList from '@components/postlist';
-import { serachPosts } from '@lib/api/blogger_api_v3';
+// import { serachPosts } from '@lib/api/blogger_api_v3';
 import type { GetServerSideProps } from 'next';
 import axios from 'axios';
 import { useRouter } from 'next/router';
+import absoluteUrl from 'next-absolute-url';
 
 const Search = ({ query, posts, post }: any) => {
   const router = useRouter();
@@ -86,10 +87,11 @@ const Search = ({ query, posts, post }: any) => {
 };
 
 export const getServerSideProps: GetServerSideProps = async(context: any) => {
+  const { origin } = absoluteUrl(context.req);
   const { query } = context;
   const filter = { 'fetchBodies': true, key: process.env.BLOGGER_API_KEY };
   const params = { ...query, ...filter };
-  const res = await serachPosts(params).then(res => res.data);
+  const res = await axios.get(`${origin}/api/search`, { params }).then((res: any) => res.data);
   return {
     props: {
       query: query?.q || '',

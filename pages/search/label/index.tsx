@@ -3,9 +3,10 @@ import Layout from '@components/layout';
 import Head from 'next/head';
 import Container from '@components/container';
 import PostList from '@components/postlist';
-import { serachPosts } from '@lib/api/blogger_api_v3';
+// import { serachPosts } from '@lib/api/blogger_api_v3';
 import type { GetServerSideProps } from 'next';
 import axios from 'axios';
+import absoluteUrl from 'next-absolute-url';
 
 const LabelPage = ({ posts, post }: any) => {
   const [dataPost, setDataPost] = React.useState<any[]>([]);
@@ -83,8 +84,9 @@ const LabelPage = ({ posts, post }: any) => {
 };
 
 export const getServerSideProps: GetServerSideProps = async(context: any) => {
+  const { origin } = absoluteUrl(context.req);
   const params = { 'fetchBodies': true, key: process.env.BLOGGER_API_KEY };
-  const res = await serachPosts(params).then(res => res.data);
+  const res = await axios.get(`${origin}/api/search`, { params }).then((res: any) => res.data);
   return {
     props: {
       posts: res,

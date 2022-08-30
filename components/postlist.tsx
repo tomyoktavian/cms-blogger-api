@@ -12,7 +12,6 @@ type Props = {
 
 const PostList: React.FC<Props> = ({ post, aspect, preloadImage }) => {
   const Date = dynamic(() => import('components/post_date'), { ssr: false }) as any;
-  const path = new URL(post.url);
 
   return (
     <>
@@ -22,7 +21,7 @@ const PostList: React.FC<Props> = ({ post, aspect, preloadImage }) => {
             'relative overflow-hidden transition-all bg-gray-100 rounded-md dark:bg-gray-800   hover:scale-105',
             aspect === 'landscape' ? 'aspect-video' : 'aspect-square'
           )}>
-          <Link href={path.pathname}>
+          <Link href={post.url}>
             <a>
               {post?.images?.length > 0 ? (
                 <Image
@@ -54,7 +53,7 @@ const PostList: React.FC<Props> = ({ post, aspect, preloadImage }) => {
         </div>
         {/* <CategoryLabel categories={post.categories} /> */}
         <h2 className="mt-2 text-lg font-semibold tracking-normal text-brand-primary dark:text-white">
-          <Link href={path.pathname}>
+          <Link href={post.url}>
             <span
               className="     bg-gradient-to-r from-green-200 to-green-100 dark:from-purple-800 dark:to-purple-900
           bg-[length:0px_10px]

@@ -3,10 +3,11 @@ import Head from 'next/head';
 import Layout from '@components/layout';
 import Container from '@components/container';
 import PostList from '@components/postlist';
-import { getPosts } from '@lib/api/blogger_api_v3';
+// import { getPosts } from '@lib/api/blogger_api_v3';
 import type { GetServerSideProps } from 'next';
 import axios from 'axios';
 import { useRouter } from 'next/router';
+import absoluteUrl from 'next-absolute-url';
 
 const Label = ({ label, posts, post }: any) => {
   const router = useRouter();
@@ -85,9 +86,10 @@ const Label = ({ label, posts, post }: any) => {
 };
 
 export const getServerSideProps: GetServerSideProps = async(context: any) => {
+  const { origin } = absoluteUrl(context.req);
   const { label } = context.query;
   const params = { labels: label, 'fetchBodies': true, key: process.env.BLOGGER_API_KEY };
-  const res = await getPosts(params).then(res => res.data);
+  const res = await axios.get(`${origin}/api/posts`, { params }).then((res: any) => res.data);
   return {
     props: {
       label: label,

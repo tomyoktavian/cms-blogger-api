@@ -115,7 +115,7 @@ export const getStaticProps: GetStaticProps = async(context: any) => {
 
   try {
     const id = await getPostWithPath(`/${year}/${month}/${path}`, { fields: 'id', key: process.env.BLOGGER_API_KEY }).then(res => res.data.id);
-    const data = await getPost(id, { fields: 'id,title,location(name,lat,lng),url,content,labels,published,updated,images,author(displayName,image),replies', key: process.env.BLOGGER_API_KEY }).then(res => res.data);
+    const data = await getPost(id, { fields: 'id,title,location(name,lat,lng),content,labels,published,updated,images,author(displayName,image),replies', key: process.env.BLOGGER_API_KEY }).then(res => res.data);
     return {
       props: {
         post: data
