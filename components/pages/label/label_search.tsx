@@ -1,26 +1,29 @@
 import React from 'react';
 import Layout from '@components/layout';
-import Head from 'next/head';
 import Container from '@components/container';
 import PostList from '@components/postlist';
-import { serachLocalPost } from '@lib/api/local_api';
-import type { NextPage, GetStaticProps } from 'next';
+import { getLocalPosts } from '@lib/api/local_api';
+import { useRouter } from 'next/router';
 
-const LabelPage: NextPage = ({ posts, post }: any) => {
+type Props = {
+  posts: any;
+  post: any[];
+};
+
+const Label = ({ posts, post }: Props) => {
+  const router = useRouter();
   const [dataPost, setDataPost] = React.useState<any[]>([]);
   const [nextPage, setNextPage] = React.useState<string>('');
 
   React.useEffect(() => {
-    console.log('post', posts);
     setDataPost(post);
-    setNextPage(posts?.nextPageToken || '');
+    setNextPage(posts.nextPageToken || '');
   }, [posts, post]);
 
   const loadMore = () => {
-    console.log('nextPage', nextPage);
     return new Promise<void>((resolve, reject) => {
-      const params = { 'fetchBodies': true, 'pageToken': nextPage };
-      serachLocalPost(params).then(res => {
+      const params = { labels: router.query.label, 'fetchBodies': true, 'pageToken': nextPage };
+      getLocalPosts(params).then(res => {
         if (res.data.nextPageToken !== undefined) {
           setNextPage(res.data.nextPageToken);
         } else {
@@ -34,13 +37,6 @@ const LabelPage: NextPage = ({ posts, post }: any) => {
 
   return (
     <>
-      <Head>
-        <title>Label</title>
-        <meta name="title" content="Label" />
-        <meta property="og:type" content="website" />
-        <meta property="og:url" content="https://blog.mediasolutif.com/" />
-        <meta property="og:title" content="Label" />
-      </Head>
       <Layout>
         <Container>
           <h1 className="text-3xl font-semibold tracking-tight text-center lg:leading-snug text-brand-primary lg:text-4xl dark:text-white">
@@ -83,26 +79,4 @@ const LabelPage: NextPage = ({ posts, post }: any) => {
   );
 };
 
-export const getStaticProps: GetStaticProps = async(context: any) => {
-  try {
-    const params = { 'fetchBodies': true, key: process.env.BLOGGER_API_KEY };
-    const res = await serachLocalPost(params).then(res => res.data);
-    return {
-      props: {
-        posts: res,
-        post: res.items
-      },
-      revalidate: 10
-    };
-  } catch (error) {
-    return {
-      props: {
-        posts: {},
-        post: []
-      },
-      revalidate: 1
-    };
-  }
-};
-
-export default LabelPage;
+export default Label;

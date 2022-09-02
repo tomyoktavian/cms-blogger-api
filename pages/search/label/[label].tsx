@@ -3,13 +3,11 @@ import Head from 'next/head';
 import Layout from '@components/layout';
 import Container from '@components/container';
 import PostList from '@components/postlist';
-// import { getPosts } from '@lib/api/blogger_api_v3';
-import type { GetServerSideProps } from 'next';
-import axios from 'axios';
+import { getLocalPosts } from '@lib/api/local_api';
+import type { NextPage, GetStaticPaths, GetStaticProps } from 'next';
 import { useRouter } from 'next/router';
-import absoluteUrl from 'next-absolute-url';
 
-const Label = ({ label, posts, post }: any) => {
+const Label: NextPage = ({ label, posts, post }: any) => {
   const router = useRouter();
   const [dataPost, setDataPost] = React.useState<any[]>([]);
   const [nextPage, setNextPage] = React.useState<string>('');
@@ -22,7 +20,7 @@ const Label = ({ label, posts, post }: any) => {
   const loadMore = () => {
     return new Promise<void>((resolve, reject) => {
       const params = { labels: router.query.label, 'fetchBodies': true, 'pageToken': nextPage };
-      axios.get('/api/posts', { params }).then((res: any) => {
+      getLocalPosts(params).then(res => {
         if (res.data.nextPageToken !== undefined) {
           setNextPage(res.data.nextPageToken);
         } else {
@@ -85,18 +83,41 @@ const Label = ({ label, posts, post }: any) => {
   );
 };
 
-export const getServerSideProps: GetServerSideProps = async(context: any) => {
-  const { origin } = absoluteUrl(context.req);
-  const { label } = context.query;
-  const params = { labels: label, 'fetchBodies': true, key: process.env.BLOGGER_API_KEY };
-  const res = await axios.get(`${origin}/api/posts`, { params }).then((res: any) => res.data);
+export const getStaticPaths: GetStaticPaths = async() => {
   return {
-    props: {
-      label: label,
-      posts: res,
-      post: res?.items || []
-    }
+    paths: [
+      { params: { label: 'label' }}
+    ],
+    fallback: true // fallback to 404 page if no match is found
   };
+};
+
+export const getStaticProps: GetStaticProps = async({ params }: any) => {
+  const { label }: any = params!;
+  const key = process.env.BLOGGER_API_KEY;
+
+  try {
+    const params = { labels: label, 'fetchBodies': true, key };
+    const res = await getLocalPosts(params).then((res: any) => res.data);
+
+    return {
+      props: {
+        label: label,
+        posts: res,
+        post: res?.items || []
+      },
+      revalidate: 10
+    };
+  } catch (error) {
+    return {
+      props: {
+        label: 'Label not found',
+        posts: {},
+        post: []
+      },
+      revalidate: 1
+    };
+  }
 };
 
 export default Label;

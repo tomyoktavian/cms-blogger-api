@@ -3,11 +3,9 @@ import Head from 'next/head';
 import Layout from '@components/layout';
 import Container from '@components/container';
 import PostList from '@components/postlist';
-// import { serachPosts } from '@lib/api/blogger_api_v3';
+import { serachLocalPost } from '@lib/api/local_api';
 import type { GetServerSideProps } from 'next';
-import axios from 'axios';
 import { useRouter } from 'next/router';
-import absoluteUrl from 'next-absolute-url';
 
 const Search = ({ query, posts, post }: any) => {
   const router = useRouter();
@@ -16,14 +14,14 @@ const Search = ({ query, posts, post }: any) => {
 
   React.useEffect(() => {
     setDataPost(post);
-    setNextPage(posts.nextPageToken || '');
+    setNextPage(posts?.nextPageToken || '');
   }, [posts, post]);
 
   const loadMore = () => {
     return new Promise<void>((resolve, reject) => {
       const filter = { 'fetchBodies': true, 'pageToken': nextPage };
       const params = { ...router.query, ...filter };
-      axios.get('/api/search', { params }).then((res: any) => {
+      serachLocalPost(params).then(res => {
         if (res.data.nextPageToken !== undefined) {
           setNextPage(res.data.nextPageToken);
         } else {
@@ -87,16 +85,15 @@ const Search = ({ query, posts, post }: any) => {
 };
 
 export const getServerSideProps: GetServerSideProps = async(context: any) => {
-  const { origin } = absoluteUrl(context.req);
   const { query } = context;
   const filter = { 'fetchBodies': true, key: process.env.BLOGGER_API_KEY };
   const params = { ...query, ...filter };
-  const res = await axios.get(`${origin}/api/search`, { params }).then((res: any) => res.data);
+  const res = await serachLocalPost(params).then(res => res.data);
   return {
     props: {
       query: query?.q || '',
       posts: res,
-      post: res.items
+      post: res?.items || []
     }
   };
 };

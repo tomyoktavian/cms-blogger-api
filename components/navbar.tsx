@@ -18,20 +18,21 @@ const Navbar = (props: Props) => {
           </div>
           <div className="hidden text-center lg:flex lg:items-center">
             <ul className="items-center justify-end flex-1 pt-6 lg:pt-0 list-reset lg:flex">
-              <div>
-                <Link href="/">
-                  <a className="text-gray-700 dark:text-gray-300 rounded-md outline-none hover:text-indigo-500 focus:text-indigo-500  transition-all focus-visible:ring-1 ring-indigo-300 dark:focus-visible:bg-gray-800 focus:outline-none inline-block px-4 py-2">
+              <Link href="/">
+                <a className="text-gray-700 dark:text-gray-300 rounded-md outline-none hover:text-indigo-500 focus:text-indigo-500  transition-all focus-visible:ring-1 ring-indigo-300 dark:focus-visible:bg-gray-800 focus:outline-none inline-block px-4 py-2">
                     Home
-                  </a>
-                </Link>
-              </div>
-              <div>
-                <Link href="/post">
-                  <a className="text-gray-700 dark:text-gray-300 rounded-md outline-none hover:text-indigo-500 focus:text-indigo-500  transition-all focus-visible:ring-1 ring-indigo-300 dark:focus-visible:bg-gray-800 focus:outline-none inline-block px-4 py-2">
-                    post
-                  </a>
-                </Link>
-              </div>
+                </a>
+              </Link>
+              <Link href="/search/label">
+                <a className="text-gray-700 dark:text-gray-300 rounded-md outline-none hover:text-indigo-500 focus:text-indigo-500  transition-all focus-visible:ring-1 ring-indigo-300 dark:focus-visible:bg-gray-800 focus:outline-none inline-block px-4 py-2">
+                  Label
+                </a>
+              </Link>
+              <Link href="/search/label/Aplikasi">
+                <a className="text-gray-700 dark:text-gray-300 rounded-md outline-none hover:text-indigo-500 focus:text-indigo-500  transition-all focus-visible:ring-1 ring-indigo-300 dark:focus-visible:bg-gray-800 focus:outline-none inline-block px-4 py-2">
+                  Aplikasi
+                </a>
+              </Link>
               <div>
                 <div className="relative text-left">
                   <button className="flex items-center gap-x-1 transition-all rounded-md outline-none focus:outline-none focus-visible:ring-1  focus-visible:text-indigo-500 dark:focus-visible:bg-gray-800 text-gray-700 dark:text-gray-300 hover:text-indigo-500 inline-block px-4 py-2" id="headlessui-menu-button-125" type="button" aria-haspopup="true" aria-expanded="false">

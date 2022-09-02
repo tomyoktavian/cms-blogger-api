@@ -1,20 +1,12 @@
 import React from 'react';
 import type { NextPage } from 'next';
 import Head from 'next/head';
-// import Image from 'next/image'
-import absoluteUrl from 'next-absolute-url';
 import Container from '@components/container';
 import PostList from '@components/postlist';
 import Layout from '@components/layout';
-import {
-  // getPosts,
-  blogs
-} from '@lib/api/blogger_api_v3';
-import type {
-  // GetStaticProps,
-  GetServerSideProps
-} from 'next';
-import axios from 'axios';
+import { blogs } from '@lib/api/blogger_api_v3';
+import { getLocalPosts } from '@lib/api/local_api';
+import type { GetStaticProps } from 'next';
 
 const Home: NextPage = ({ blog, posts, post }: any) => {
   const [dataPost, setDataPost] = React.useState<any[]>([]);
@@ -22,13 +14,13 @@ const Home: NextPage = ({ blog, posts, post }: any) => {
 
   React.useEffect(() => {
     setDataPost(post);
-    setNextPage(posts.nextPageToken || '');
+    setNextPage(posts?.nextPageToken || '');
   }, [posts, post]);
 
   const loadMore = () => {
     return new Promise<void>((resolve, reject) => {
       const params = { 'fetchImages': true, 'fetchBodies': false, 'pageToken': nextPage };
-      axios.get('/api/posts', { params }).then((res: any) => {
+      getLocalPosts(params).then(res => {
         if (res.data.nextPageToken !== undefined) {
           setNextPage(res.data.nextPageToken);
         } else {
@@ -48,7 +40,7 @@ const Home: NextPage = ({ blog, posts, post }: any) => {
         <meta name="description" content={blog.description} />
 
         <meta property="og:type" content="website" />
-        <meta property="og:url" content="https://blog.mediasolutif.com/" />
+        <meta property="og:url" content={process.env.NEXT_PUBLIC_DOMAIN} />
         <meta property="og:title" content={blog.name} />
         <meta property="og:description" content={blog.description} />
 
@@ -93,38 +85,26 @@ const Home: NextPage = ({ blog, posts, post }: any) => {
   );
 };
 
-// export const getStaticProps: GetStaticProps = async(context: any) => {
-//   try {
-//     const data = await blogs({ key: process.env.BLOGGER_API_KEY }).then((res: any) => res.data);
-//     const params = { 'fetchImages': true, 'fetchBodies': false, key: process.env.BLOGGER_API_KEY };
-//     const res = await getPosts(params).then(res => res.data);
-//     return {
-//       props: {
-//         blog: data,
-//         posts: res,
-//         post: res.items
-//       },
-//       revalidate: 10
-//     };
-//   } catch (error) {
-//     return {
-//       notFound: true
-//     };
-//   }
-// };
-
-export const getServerSideProps: GetServerSideProps = async(context: any) => {
-  const { origin } = absoluteUrl(context.req);
-  const data = await blogs({ key: process.env.BLOGGER_API_KEY }).then((res: any) => res.data);
-  const params = { 'fetchImages': true, 'fetchBodies': false, key: process.env.BLOGGER_API_KEY };
-  const res = await axios.get(`${origin}/api/posts`, { params }).then((res: any) => res.data);
-  return {
-    props: {
-      blog: data,
-      posts: res,
-      post: res?.items || []
-    }
-  };
+export const getStaticProps: GetStaticProps = async(context: any) => {
+  const key = process.env.BLOGGER_API_KEY;
+  try {
+    const data = await blogs({ key }).then((res: any) => res.data);
+    const params = { 'fetchImages': true, 'fetchBodies': false, key };
+    const res = await getLocalPosts(params).then(res => res.data);
+    return {
+      props: {
+        blog: data,
+        posts: res || {},
+        post: res?.items || []
+      },
+      revalidate: 10
+    };
+  } catch (error) {
+    console.log(error);
+    return {
+      notFound: true
+    };
+  }
 };
 
 export default Home;

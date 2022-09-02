@@ -11,11 +11,6 @@ const nextConfig = {
       '5.bp.blogspot.com',
       'via.placeholder.com'
     ]
-  },
-  experimental: {
-    images: {
-      unoptimized: true
-    }
   }
 };
 
