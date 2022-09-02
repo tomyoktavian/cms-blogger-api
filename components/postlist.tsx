@@ -3,7 +3,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import dynamic from 'next/dynamic';
 import { cx } from '@utils/classnames';
-import { trimString } from '@utils/use-trim-text';
+// import { trimString } from '@utils/use-trim-text';
 
 type Props = {
   post: any,
@@ -13,7 +13,7 @@ type Props = {
 
 const PostList: React.FC<Props> = ({ post, aspect, preloadImage }) => {
   const Date = dynamic(() => import('components/post_date'), { ssr: false }) as any;
-  const description = trimString(post?.content, 165);
+  // const description = trimString(post?.content, 165);
 
   return (
     <>
@@ -69,11 +69,11 @@ const PostList: React.FC<Props> = ({ post, aspect, preloadImage }) => {
           </Link>
         </h2>
 
-        {description && (
+        {/* {description && (
           <p className="mt-2 text-sm text-gray-500 dark:text-gray-400 line-clamp-3">
             {description}
           </p>
-        )}
+        )} */}
 
         <div className="flex items-center mt-3 space-x-3 text-gray-500 dark:text-gray-400">
           <div className="flex items-center gap-3">
