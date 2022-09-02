@@ -3,6 +3,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import dynamic from 'next/dynamic';
 import { cx } from '@utils/classnames';
+import { trimString } from '@utils/use-trim-text';
 
 type Props = {
   post: any,
@@ -12,6 +13,7 @@ type Props = {
 
 const PostList: React.FC<Props> = ({ post, aspect, preloadImage }) => {
   const Date = dynamic(() => import('components/post_date'), { ssr: false }) as any;
+  const description = trimString(post?.content, 165);
 
   return (
     <>
@@ -26,7 +28,7 @@ const PostList: React.FC<Props> = ({ post, aspect, preloadImage }) => {
               {post?.images?.length > 0 ? (
                 <Image
                   src={post?.images[0].url}
-                  alt={'Thumbnail'}
+                  alt={post.title}
                   // placeholder="blur"
                   sizes="80vw"
                   // sizes="(max-width: 640px) 90vw, 480px"
@@ -38,7 +40,7 @@ const PostList: React.FC<Props> = ({ post, aspect, preloadImage }) => {
               ) : (
                 <Image
                   src={'https://via.placeholder.com/320x320?text=No-Image'}
-                  alt={'Thumbnail'}
+                  alt={post.title}
                   // placeholder="blur"
                   sizes="80vw"
                   // sizes="(max-width: 640px) 90vw, 480px"
@@ -55,27 +57,23 @@ const PostList: React.FC<Props> = ({ post, aspect, preloadImage }) => {
         <h2 className="mt-2 text-lg font-semibold tracking-normal text-brand-primary dark:text-white">
           <Link href={post.url}>
             <span
-              className="     bg-gradient-to-r from-green-200 to-green-100 dark:from-purple-800 dark:to-purple-900
-          bg-[length:0px_10px]
-          bg-left-bottom
-          bg-no-repeat
-          transition-[background-size]
-          duration-500
-          hover:bg-[length:100%_3px] group-hover:bg-[length:100%_10px]">
+              className="bg-gradient-to-r from-green-200 to-green-100 dark:from-purple-800 dark:to-purple-900
+              bg-[length:0px_10px]
+              bg-left-bottom
+              bg-no-repeat
+              transition-[background-size]
+              duration-500
+              hover:bg-[length:100%_3px] group-hover:bg-[length:100%_10px]">
               {post.title}
             </span>
           </Link>
         </h2>
 
-        {/* <div className="hidden">
-          {post.excerpt && (
-            <p className="mt-2 text-sm text-gray-500 dark:text-gray-400 line-clamp-3">
-              <Link href={`/post/${post.slug.current}`}>
-                {post.excerpt}
-              </Link>
-            </p>
-          )}
-        </div> */}
+        {description && (
+          <p className="mt-2 text-sm text-gray-500 dark:text-gray-400 line-clamp-3">
+            {description}
+          </p>
+        )}
 
         <div className="flex items-center mt-3 space-x-3 text-gray-500 dark:text-gray-400">
           <div className="flex items-center gap-3">

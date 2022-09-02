@@ -38,7 +38,7 @@ const LabelPage: NextPage = ({ posts, post }: any) => {
         <title>Label</title>
         <meta name="title" content="Label" />
         <meta property="og:type" content="website" />
-        <meta property="og:url" content="https://blog.mediasolutif.com/" />
+        <meta property="og:url" content={process.env.NEXT_PUBLIC_DOMAIN} />
         <meta property="og:title" content="Label" />
       </Head>
       <Layout>

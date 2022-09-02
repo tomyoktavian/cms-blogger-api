@@ -19,7 +19,7 @@ const Home: NextPage = ({ blog, posts, post }: any) => {
 
   const loadMore = () => {
     return new Promise<void>((resolve, reject) => {
-      const params = { 'fetchImages': true, 'fetchBodies': false, 'pageToken': nextPage };
+      const params = { 'fetchImages': true, 'fetchBodies': true, 'pageToken': nextPage };
       getLocalPosts(params).then(res => {
         if (res.data.nextPageToken !== undefined) {
           setNextPage(res.data.nextPageToken);
@@ -89,7 +89,7 @@ export const getStaticProps: GetStaticProps = async(context: any) => {
   const key = process.env.BLOGGER_API_KEY;
   try {
     const data = await blogs({ key }).then((res: any) => res.data);
-    const params = { 'fetchImages': true, 'fetchBodies': false, key };
+    const params = { 'fetchImages': true, 'fetchBodies': true, key };
     const res = await getLocalPosts(params).then(res => res.data);
     return {
       props: {

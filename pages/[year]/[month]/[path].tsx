@@ -5,6 +5,7 @@ import Image from 'next/image';
 import dynamic from 'next/dynamic';
 import Layout from '@components/layout';
 import Container from '@components/container';
+import { trimString } from '@utils/use-trim-text';
 import type { GetStaticPaths, GetStaticProps } from 'next';
 import { getPostsUrl, getPostWithPath, getPost } from '@lib/api/blogger_api_v3';
 
@@ -14,14 +15,6 @@ type Props = {
 
 const Path = ({ post }: Props) => {
   const Date = dynamic(() => import('components/post_date'), { ssr: false }) as any;
-
-  const trimString = function(string: string, length: number) {
-    return string.length > length
-      ? string.substring(0, length) + '...'
-      : string;
-  };
-
-  // console.log('content', post);
   return (
     <>
       <Head>
@@ -30,9 +23,9 @@ const Path = ({ post }: Props) => {
         <meta name="description" content={trimString(post.content.replace(/(<([^>]+)>)/gi, ''), 155)}/>
 
         <meta property="og:type" content="website"/>
-        <meta property="og:url" content="https://blog.mediasolutif.com/"/>
+        <meta property="og:url" content={process.env.NEXT_PUBLIC_DOMAIN}/>
         <meta property="og:title" content={post.title}/>
-        <meta property="og:description" content={trimString(post.content.replace(/(<([^>]+)>)/gi, ''), 155)}/>
+        <meta property="og:description" content={trimString(post.content, 155)}/>
         <meta property="og:image" content={post.images[0].url}/>
 
       </Head>

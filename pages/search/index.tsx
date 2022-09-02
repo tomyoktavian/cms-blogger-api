@@ -39,7 +39,7 @@ const Search = ({ query, posts, post }: any) => {
         <title>{query || 'Search'}</title>
         <meta name="title" content={query || 'Search'} />
         <meta property="og:type" content="website" />
-        <meta property="og:url" content="https://blog.mediasolutif.com/" />
+        <meta property="og:url" content={process.env.NEXT_PUBLIC_DOMAIN} />
         <meta property="og:title" content={query || 'Search'} />
       </Head>
       <Layout>
